@@ -1,0 +1,11 @@
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\bin\Debug\netcoreapp2.2\Solution.DLL.deps.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\bin\Debug\netcoreapp2.2\Solution.DLL.dll
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\bin\Debug\netcoreapp2.2\Solution.DLL.pdb
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.csproj.CoreCompileInputs.cache
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.AssemblyInfoInputs.cache
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.AssemblyInfo.cs
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.dll
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.pdb
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\bin\Debug\netcoreapp2.2\Solution.DLL.runtimeconfig.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\bin\Debug\netcoreapp2.2\Solution.DLL.runtimeconfig.dev.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.DLL\obj\Debug\netcoreapp2.2\Solution.DLL.csprojAssemblyReference.cache

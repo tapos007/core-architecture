@@ -1,0 +1,11 @@
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\bin\Debug\netcoreapp2.2\Solution.BLL.deps.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\bin\Debug\netcoreapp2.2\Solution.BLL.runtimeconfig.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\bin\Debug\netcoreapp2.2\Solution.BLL.runtimeconfig.dev.json
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\bin\Debug\netcoreapp2.2\Solution.BLL.dll
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\bin\Debug\netcoreapp2.2\Solution.BLL.pdb
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.csprojAssemblyReference.cache
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.csproj.CoreCompileInputs.cache
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.AssemblyInfoInputs.cache
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.AssemblyInfo.cs
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.dll
+C:\Users\R041705033\source\repos\CompleteSolution\Solution.BLL\obj\Debug\netcoreapp2.2\Solution.BLL.pdb
