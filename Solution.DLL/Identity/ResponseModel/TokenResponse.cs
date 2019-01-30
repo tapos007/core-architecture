@@ -14,8 +14,8 @@ namespace Solution.DLL.Identity.ResponseModel
 
         public string Email { get; set; }
 
-        public string TenantCode { get; set; }
+        public DateTime TokenExpiration { get; set; }
 
-        
+
     }
 }
