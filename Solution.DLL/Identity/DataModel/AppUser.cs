@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Web.Api.Infrastructure.Identity
+namespace Solution.DLL.Identity.DataModel
 {
     public class AppUser : IdentityUser
     {

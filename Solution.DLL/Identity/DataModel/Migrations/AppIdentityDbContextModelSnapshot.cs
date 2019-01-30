@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Solution.DLL.Identity.DBContext;
 
-namespace Solution.DLL.Identity.DBContext.Migrations
+namespace Solution.DLL.Identity.DataModel.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20190129090733_InitialCreate")]
-    partial class InitialCreate
+    partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +27,9 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Name")
                         .HasMaxLength(256);
 
@@ -43,6 +44,8 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -131,7 +134,7 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Web.Api.Infrastructure.Identity.AppUser", b =>
+            modelBuilder.Entity("Solution.DLL.Identity.DataModel.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -182,6 +185,65 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Solution.DLL.Identity.DataModel.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(450);
+
+                    b.Property<DateTime>("ExpiresUtc");
+
+                    b.Property<DateTime>("IssuedUtc");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("Token")
+                        .HasName("refreshToken_Token");
+
+                    b.HasAlternateKey("UserId")
+                        .HasName("refreshToken_UserId");
+
+                    b.ToTable("AspNetRefreshTokens");
+                });
+
+            modelBuilder.Entity("Solution.DLL.Identity.DataModel.AppRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("AppRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "864a597c-afaf-446e-8a1d-63bd80dcdfbf",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "b3a4e353-8d0a-4fb4-8a3f-b0c17bbe584b",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            ConcurrencyStamp = "27e0fbc4-538c-4700-80a7-c6ba2aecfa0c",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -192,7 +254,7 @@ namespace Solution.DLL.Identity.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Web.Api.Infrastructure.Identity.AppUser")
+                    b.HasOne("Solution.DLL.Identity.DataModel.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -200,7 +262,7 @@ namespace Solution.DLL.Identity.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Web.Api.Infrastructure.Identity.AppUser")
+                    b.HasOne("Solution.DLL.Identity.DataModel.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -213,7 +275,7 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Web.Api.Infrastructure.Identity.AppUser")
+                    b.HasOne("Solution.DLL.Identity.DataModel.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -221,7 +283,15 @@ namespace Solution.DLL.Identity.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Web.Api.Infrastructure.Identity.AppUser")
+                    b.HasOne("Solution.DLL.Identity.DataModel.AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Solution.DLL.Identity.DataModel.RefreshToken", b =>
+                {
+                    b.HasOne("Solution.DLL.Identity.DataModel.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

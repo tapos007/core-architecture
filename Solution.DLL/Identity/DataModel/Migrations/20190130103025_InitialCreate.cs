@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Solution.DLL.Identity.DBContext.Migrations
+namespace Solution.DLL.Identity.DataModel.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -15,7 +15,8 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,6 +65,29 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 450, nullable: false),
+                    IssuedUtc = table.Column<DateTime>(nullable: false),
+                    ExpiresUtc = table.Column<DateTime>(nullable: false),
+                    Token = table.Column<string>(maxLength: 450, nullable: false),
+                    UserId = table.Column<string>(maxLength: 450, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRefreshTokens", x => x.Id);
+                    table.UniqueConstraint("refreshToken_Token", x => x.Token);
+                    table.UniqueConstraint("refreshToken_UserId", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_AspNetRefreshTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -153,6 +177,21 @@ namespace Solution.DLL.Identity.DBContext.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
+                values: new object[] { "1", "864a597c-afaf-446e-8a1d-63bd80dcdfbf", "AppRole", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
+                values: new object[] { "2", "b3a4e353-8d0a-4fb4-8a3f-b0c17bbe584b", "AppRole", "Customer", "CUSTOMER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Discriminator", "Name", "NormalizedName" },
+                values: new object[] { "3", "27e0fbc4-538c-4700-80a7-c6ba2aecfa0c", "AppRole", "Agent", "AGENT" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -195,6 +234,9 @@ namespace Solution.DLL.Identity.DBContext.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AspNetRefreshTokens");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

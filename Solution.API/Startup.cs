@@ -7,6 +7,7 @@ using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,9 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Solution.API.Middlewares;
 using Solution.DLL;
+using Solution.DLL.Identity.DataModel;
 using Solution.DLL.Identity.DBContext;
 using Swashbuckle.AspNetCore.Swagger;
-using Web.Api.Infrastructure.Identity;
 
 namespace Solution.API
 {
@@ -35,11 +36,13 @@ namespace Solution.API
 
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             // start token based work
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]));
-
-            services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<AppIdentityDbContext>();
+//
+//            services.AddDefaultIdentity<AppUser>().AddEntityFrameworkStores<AppIdentityDbContext>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

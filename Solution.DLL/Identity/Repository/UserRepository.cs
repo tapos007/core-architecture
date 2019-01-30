@@ -4,8 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
+using Solution.DLL.Identity.DataModel;
 using Solution.DLL.Identity.DBContext;
-using Web.Api.Infrastructure.Identity;
 
 namespace Solution.DLL.Identity.Repository
 {
