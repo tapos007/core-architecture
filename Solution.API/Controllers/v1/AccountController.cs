@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,32 @@ namespace Solution.API.Controllers.v1
         [HttpGet("check")]
         public  ActionResult Check()
         {
+
+            var user = HttpContext.User;
+            return Ok("you are authorized");
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpGet("checkCustomer")]
+        public ActionResult checkCustomer()
+        {
+
+
+            var info = this.User.FindFirst(ClaimTypes.Email);
+            var info1 = this.User.FindFirst(ClaimTypes.Role);
+            var info2 = this.User.FindFirst(ClaimTypes.NameIdentifier);
             
+           
+
+            return Ok("you are authorized");
+        }
+
+
+        [Authorize(Roles = "Agent")]
+        [HttpGet("checkAgent")]
+        public ActionResult checkAgent()
+        {
+
 
             return Ok("you are authorized");
         }

@@ -16,10 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Solution.DLL\Solution.DLL.csproj" />
+    <ProjectReference Include="..\UtilityProject\UtilityProject.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\v2\" />
+    <Folder Include="ApiResponse\" />
   </ItemGroup>
 
 </Project>

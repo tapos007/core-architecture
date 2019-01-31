@@ -25,7 +25,7 @@ namespace Solution.API.Controllers.v1
         [HttpGet]
         public async Task<ActionResult<string>> Get()
         {
-            _userRepository.SeedData();
+            
            // await _testRepository.addDataElastic();
             return await _testRepository.getData("name");
         }

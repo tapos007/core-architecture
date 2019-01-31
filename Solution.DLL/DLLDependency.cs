@@ -15,7 +15,7 @@ namespace Solution.DLL
         {
            
             services.AddTransient<ITestRepository, TestRepository>();
-           // services.AddSingleton<IElasticHelper, ElasticHelper>();
+            services.AddSingleton<IElasticHelper, ElasticHelper>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -26,14 +27,16 @@ namespace Solution.DLL.Identity.Repository
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly AppIdentityDbContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _configuration;
 
-        public UserRepository(UserManager<AppUser> userManager,
+        public UserRepository(UserManager<AppUser> userManager,RoleManager<AppRole> roleManager,
             AppIdentityDbContext context, SignInManager<AppUser> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
             _signInManager = signInManager;
             _configuration = configuration;
@@ -46,7 +49,7 @@ namespace Solution.DLL.Identity.Repository
             var result = await _userManager.CreateAsync(user, customer.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "Customer");
+                await _userManager.AddToRoleAsync(user, "Agent");
                 return true;
             }
 
@@ -81,7 +84,7 @@ namespace Solution.DLL.Identity.Repository
                     _context.RefreshTokens.Add(newRefreshToken);
                     await _context.SaveChangesAsync();
 
-                    var token = GenerateToken();
+                    var token = await GenerateToken(user);
                     var response = new TokenResponse
                     {
                         AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
@@ -97,17 +100,38 @@ namespace Solution.DLL.Identity.Repository
             throw new Exception("user not found");
         }
 
-        private JwtSecurityToken GenerateToken()
+        private async Task<JwtSecurityToken> GenerateToken(AppUser user)
         {
+
+            var userRoles = await _userManager.GetRolesAsync(user);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var nowUtc = DateTime.Now.ToUniversalTime();
             var expires = nowUtc.AddMinutes(double.Parse(_configuration["Tokens:Lifetime"])).ToUniversalTime();
-
+            IdentityOptions _options = new IdentityOptions();
+            var claims = new List<Claim>
+            {
+                
+                new Claim(_options.ClaimsIdentity.UserIdClaimType, user.Id.ToString()),
+                new Claim(_options.ClaimsIdentity.UserNameClaimType, user.UserName)
+            };
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
             var token = new JwtSecurityToken(
                 _configuration["Tokens:Issuer"],
                 _configuration["Tokens:Audience"],
-                null,
+                claims,
                 expires: expires,
                 signingCredentials: creds);
 

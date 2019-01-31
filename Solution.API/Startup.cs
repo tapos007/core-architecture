@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Solution.API.Filters;
 using Solution.API.Middlewares;
 using Solution.DLL;
 using Solution.DLL.Identity.DataModel;
@@ -91,6 +93,13 @@ namespace Solution.API
             services.AddSingleton<IIpPolicyStore, DistributedCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitCounterStore, DistributedCacheRateLimitCounterStore>();
             AddALLExternalDependency(services);
+
+
+            services.AddMvc(options =>
+            {
+                // All endpoints need authorization using our custom authorization filter
+                options.Filters.Add(new CustomAuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+            });
         }
 
         private void AddALLExternalDependency(IServiceCollection services)
