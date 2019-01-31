@@ -11,6 +11,8 @@ namespace Solution.DLL.Identity.DBContext
 
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<RefreshToken>()
